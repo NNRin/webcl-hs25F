@@ -43,6 +43,21 @@ class Model{
 
 }
 
+const effects = ['kb-top-left', 'kb-bottom-right', 'kb-subtle'];
+
+function changeImageAndEffect(imageElement, newImageUrl) {
+    // 1. Set the new image source
+    imageElement.src = newImageUrl;
+
+    // 2. Remove any existing Ken Burns classes
+    imageElement.className = ''; // Clears all classes
+
+    // 3. Pick a random effect and add it
+    const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+    imageElement.classList.add(randomEffect);
+}
+
+
 class View {
     mountainList;
     mountainImage;
@@ -78,7 +93,7 @@ class View {
         const currentSelection = mountains.find(m => m.ID == currentSelectionId);
 
         // populate the img
-        this.mountainImage.src = currentSelection.IMAGE_URL;
+        changeImageAndEffect(this.mountainImage, currentSelection.IMAGE_URL);
 
         // set details
         this.details.mountainID.textContent = currentSelection.ID;

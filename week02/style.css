@@ -74,18 +74,66 @@ body {
     flex-direction: column; /* Stacks image and details vertically */
 }
 
-.image-container {
-    flex-basis: 100%; /* The image area takes 60% of the right panel's height */
-    margin-bottom: 1.5rem;
+.kenburns-container {
+    width: 100%; /* Or any fixed size you want */
+    height: 75vh; /* Example height */
+    overflow: hidden; /* Crucial for the cropping effect */
+    position: relative;
 }
 
-#main-image {
+.kenburns-container img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Ensures the image covers the area without distortion */
-    border-radius: 6px;
-    background-color: #eee;
+    object-fit: cover; //contain??
+
+    /* Apply one of the animations */
+    animation: kenburns-bottom-right 20s ease-out infinite;
 }
+/* style.css */
+
+/* Effect 1: Zooms in and pans from top-left to bottom-right */
+@keyframes kenburns-top-left {
+    0% {
+        transform: scale(1.2) translate(-5%, -5%);
+    }
+    100% {
+        transform: scale(1) translate(0, 0);
+    }
+}
+
+/* Effect 2: Zooms out and pans from bottom-right to top-left */
+@keyframes kenburns-bottom-right {
+    0% {
+        transform: scale(1) translate(0, 0);
+    }
+    100% {
+        transform: scale(1.2) translate(5%, 5%);
+    }
+}
+
+/* Effect 3: A slower, more subtle zoom-in to the center */
+@keyframes kenburns-subtle {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.15);
+    }
+}
+/* Add these classes */
+.kb-top-left {
+    animation: kenburns-top-left 20s ease-out infinite alternate;
+}
+.kb-bottom-right {
+    animation: kenburns-bottom-right 20s ease-out infinite alternate;
+}
+.kb-subtle {
+    animation: kenburns-subtle 25s ease-in-out infinite alternate;
+}
+
+/* 'alternate' makes the animation play forwards, then backwards,
+   creating a very smooth and continuous panning effect.
+*/
 
 .details-container {
     flex-grow: 1; /* The details area takes the remaining vertical space */
