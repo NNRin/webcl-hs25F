@@ -3,7 +3,7 @@
 // requires ../dataflow/dataflow.js
 
 const TodoController = () => {
-
+    //helper function
     const Todo = () => {                                // facade
         const textAttr = Observable("text");            // we currently don't expose it as we don't use it elsewhere
         const doneAttr = Observable(false);
@@ -17,6 +17,7 @@ const TodoController = () => {
         }
     };
 
+    // fields
     const todoModel = ObservableList([]); // observable array of Todos, this state is private
     const scheduler = Scheduler();
 

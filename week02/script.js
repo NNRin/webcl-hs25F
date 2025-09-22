@@ -1,3 +1,6 @@
+// requires ../week01/dataflow/dataflow.js
+// requires KenBurnsService.js
+
 /** sample mountain entry
  * {
  *   "ID": "0",
@@ -34,7 +37,7 @@ class Model{
     setCurrentSelection(mountainName){
         if(this.mountains.some(m => m.NAME === mountainName)){
             this.currentSelection = this.mountains.find(m => m.NAME === mountainName).ID;
-            this.onCurrentSelectionChanged(this.mountains, this.currentSelection);
+            this.onCurrentSelectionChanged(this.mountains, this.currentSelection, this.zoomFactor);
         }
     }
 
@@ -97,8 +100,8 @@ class View {
         });
     }
 
-    displayMountainContent(mountains, mountainID){
-        this.displayMountainList(mountains, mountainID);
+    displayMountainContent(mountains, mountainID ){
+        this.displayMountainList(mountains, mountainID );
     }
 
 }
@@ -118,7 +121,9 @@ class Controller {
 
     handleSelectionFromListChanged = (mountainName) => {
         this.model.setCurrentSelection(mountainName);
+
     }
+
 
     onCurrentSelectionChanged = (mountains, mountainID) => {
         this.view.displayMountainContent(mountains, mountainID);
@@ -126,4 +131,6 @@ class Controller {
 
 }
 
-const app = new Controller(new Model(), new View());
+
+const model = new Model();
+const app = new Controller(model, new View());
