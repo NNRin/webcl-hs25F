@@ -8,6 +8,12 @@
         #one {
             background-color: blue;
             width:            100px; /* for experiments only */
+            aspect-ratio:     1 / 1;
+            clip-path: polygon(
+                 0    0,
+               100%   0,
+                50% 100%
+            );
         }
         #two {
             background-color: red;
@@ -22,7 +28,9 @@
 </head>
 <body>
 
-<div id="one"> </div>
+<div id="one">
+
+</div>
 <div id="two"> </div>
 <div id="three"> </div>
 
