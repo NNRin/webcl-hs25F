@@ -8,10 +8,17 @@
           background:   #1f1f56;
       }
       main {
-
+          perspective:     200vmax;
+      }
+      @property --angle {
+        syntax: "<number>";
+        initial-value: 0;
+        inherits: false;
       }
       main .starwars {
-
+          --angle:          0;
+          transform:        rotateX(calc(var(--angle) * 1deg));
+          transform-origin: center top;
           padding:          2em;
           color:            lightgoldenrodyellow;
           background-color: rgba(255, 255, 255, .3);
@@ -37,7 +44,7 @@
     </div>
     <div>
         <label for="range"></label>
-        <input type="range" min="0" max="90" value="0" id="range">
+        <input type="range" step="1" min="0" max="90" value="0" id="range">
     </div>
 
 </main>
@@ -45,6 +52,8 @@
 <script>
     const starwars = document.querySelector(".starwars");
     const range    = document.getElementById("range");
+
+    range.oninput = _event =>  starwars.style.setProperty("--angle", range.value);
 
 </script>
 
