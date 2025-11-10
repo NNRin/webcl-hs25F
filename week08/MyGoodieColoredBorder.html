@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <title>Css background</title>
+    <style>
+        /* * ADD THIS:
+         * Registering the property ensures the browser knows
+         * how to animate it smoothly from 0deg to 360deg.
+         */
+        @property --angle {
+            syntax: '<angle>';
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        body {
+            display: grid;
+            place-items: center; /* Added this to center your items */
+            gap: 2em;           /* Added space between items */
+        }
+
+        .borderRainbow {
+            box-sizing: border-box;
+            width: 50%;
+            aspect-ratio: 1 / 1;
+
+            /* * FIX: Replaced 'canvas' with 'white'.
+             */
+            background:
+                    linear-gradient(white, white) padding-box,
+                    conic-gradient(from var(--angle, 0deg), red, orange, yellow, green, blue, indigo, violet, red) border-box;
+
+            border: solid 3em transparent;
+            position: relative;
+            border-radius: 1em;
+            transform-origin: center;
+            will-change: --angle;
+            animation: flowBorder 5s linear infinite;
+        }
+
+        @keyframes flowBorder {
+            from {
+                --angle: 0deg;
+            }
+            to {
+                --angle: 360deg;
+            }
+        }
+
+        .borderRainbowModular {
+            /* * FIX: Also replaced 'canvas' with 'white' here.
+             * Note: This class does not have the 'animation' property,
+             * so it will correctly remain static.
+             */
+            background:
+                    linear-gradient(white, white) padding-box,
+                    conic-gradient(from 90deg, red, orange, yellow, green, blue, indigo, violet, red) border-box;
+            border-color: transparent;
+        }
+
+        button {
+            box-sizing: border-box;
+            display: inline-grid;
+            place-items: center;
+            width: 12rem;
+            padding: 0.5rem 1rem;
+            border: solid 0.8rem transparent;
+            border-radius: 0.6rem;
+            font: inherit;
+            cursor: pointer;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="borderRainbow">  </div>
+<button class="borderRainbowModular">Mybutton</button>
+</body>
+
+</html>
