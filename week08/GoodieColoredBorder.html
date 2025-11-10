@@ -7,10 +7,18 @@
         body {
             display: grid;
         }
-        .borderRainbow {
-            box-sizing: border-box;
-            width: 50%;
-            aspect-ratio: 1 / 1;
+        .customSize {
+            box-sizing:     border-box;
+            width:          50%;
+            aspect-ratio:   1 / 1;
+            border: 3em solid black;
+            border-radius: 3em;
+        }
+        .borderRainbow:hover {
+            border-color: transparent;
+            background:
+                linear-gradient(canvas, canvas)   padding-box,
+                conic-gradient(#aaa, #bbb, #ccc) border-box;
         }
 
 
@@ -19,7 +27,8 @@
 
 <body>
 
-<div class="borderRainbow">  </div>
+<div class="customSize borderRainbow"></div>
+<button class="borderRainbow">my button</button>
 
 </body>
 
