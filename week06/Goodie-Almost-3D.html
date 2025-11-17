@@ -10,14 +10,14 @@
       main {
           perspective:     200vmax;
       }
-      @property --angle {
+      @property --_angle {
         syntax: "<number>";
         initial-value: 0;
         inherits: false;
       }
       main .starwars {
-          --angle:          0;
-          transform:        rotateX(calc(var(--angle) * 1deg));
+          --_angle:          0;
+          transform:        rotateX(calc(var(--_angle) * 1deg));
           transform-origin: center top;
           padding:          2em;
           color:            lightgoldenrodyellow;

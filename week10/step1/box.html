@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Scene</title>
+    <link rel="stylesheet" href="../box/scene/scene.css">
+    <style>
+        html {
+            overscroll-behavior:    none;
+        }
+
+        body {
+            min-height:             100dvh;
+            display:                grid;
+            grid-template-columns:  100%;
+            grid-template-rows:     1fr max-content;
+            margin:                 0;
+            background:             linear-gradient(in srgb-linear, blue, orange);
+        }
+
+        /* provides the logical group */
+        .box {
+            grid-area:          1/1;
+            --box-width:        20;
+            --z-center:         calc(1cqmin * var(--box-width) / 2);
+            width:              calc(var(--box-width) * 1cqmin);
+            aspect-ratio:       1 / 1;
+            display:            grid;                              /* child positioning  */
+            transform-style:    preserve-3d;                       /* put children in our 3d space */
+            translate:          0 0 var(--z-center);
+            --rotate-x:         0;
+            --rotate-y:         0;
+        }
+
+        /* all children go directly on top of each other */
+        .box > * {
+            grid-area:          1/1;
+        }
+
+
+        /* the transform origin for rotate is center by default, so rotations must first */
+        /* put the respective face in the the center, then rotate.            */
+
+        .front  {transform:                 translateZ(var(--z-center));}  /* move front to center */
+        .back   {transform: rotateY(180deg) translateZ(var(--z-center));}  /* center, then around Y-axis to the back */
+        .left   {transform: rotateY(-90deg) translateZ(var(--z-center));}  /* center, then around Y-axis to the left */
+        .right  {transform: rotateY( 90deg) translateZ(var(--z-center));}  /* center, then around Y-axis to the right */
+        .top    {transform: rotateX( 90deg) translateZ(var(--z-center));}  /* center, then around X-axis to the top */
+        .bottom {transform: rotateX(-90deg) translateZ(var(--z-center));}  /* center, then around X-axis to the bottom */
+
+        .face {
+            background-image:   linear-gradient(20deg in srgb-linear, #5d008bc0, 40%, darkgoldenrod, 60%, #5d008bc0);
+            box-shadow:         0 0 2cqmin #5d008b inset;
+            border-radius:      3%;
+            display:            grid;
+            place-items:        center;
+        }
+
+
+    </style>
+</head>
+<body>
+<main id="main" class="scene3d noSelection">
+    <div class="coords" style="
+        --coords-rotate-x:  70;
+        --coords-rotate-y: -25;
+">
+        <div class="box" >
+             <div class="face front"></div>
+             <div class="face back" ></div>
+             <div class="face left" ></div>
+             <div class="face right"></div>
+             <div class="face top"  ></div>
+             <div class="face bottom"></div>
+         </div>
+    </div>
+</main>
+
+<script>
+
+
+</script>
+</body>
+</html>

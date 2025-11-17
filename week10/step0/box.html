@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Scene</title>
+    <style>
+        html {
+            overscroll-behavior:    none;
+        }
+
+        /* The scene provides the area in which 3d visualizations and operations can take place
+           as well as setting the "camera position".
+           It also serves as the sensitive area for mouse & touch events to rotate the
+           coordinate system of the scene.
+        */
+        .scene3d {
+            container:              scene3d inline-size;
+            perspective:            200vmax;
+            perspective-origin:     right top;
+            position:               relative;
+        }
+
+        /* provides the logical group for the coordinate system */
+        .coords {
+            position:           absolute; /* position the 000 coords at the center of the scene */
+            top:                30cqh;
+            left:               30cqw;
+
+            --coord-length:     60cqmin;
+            width:              var(--coord-length);
+            aspect-ratio:       1 / 1;
+
+            display:            grid;                              /* child positioning  */
+            transform-style:    preserve-3d;                       /* put children in our 3d space */
+            --coords-rotate-x:  0;
+            --coords-rotate-y:  0;
+            --coords-rotate-z:  0;
+            transform-origin:   0 0;
+            transform:          rotateZ(calc(var(--coords-rotate-z) * 1deg))
+                                rotateY(calc(var(--coords-rotate-y) * 1deg))
+                                rotateX(calc(var(--coords-rotate-x) * 1deg)) ;
+            transition:         transform .25s ease-out;            /* simulate a bit of momentum */
+        }
+
+        .noSelection {
+            -webkit-user-select:    none; /* sadly still needed in 2024 */
+            user-select:            none;
+        }
+
+
+        body {
+            min-height:             100dvh;
+            display:                grid;
+            grid-template-columns:  100%;
+            grid-template-rows:     1fr max-content;
+            margin:                 0;
+            background:             linear-gradient(in srgb-linear, blue, orange);
+        }
+
+        /* provides the logical group */
+        .box {
+            border: 2px dashed white;
+            --box-width:        30;
+            --z-center:         calc(1cqmin * var(--box-width) / 2);
+            width:              calc(var(--box-width) * 1cqmin);
+            aspect-ratio:       1 / 1;
+            display:            grid;                              /* child positioning  */
+            transform-style:    preserve-3d;                       /* put children in our 3d space */
+            translate:          0 0 var(--z-center);
+            --rotate-x:         0;
+            --rotate-y:         0;
+        }
+
+        /* all children go directly on top of each other */
+        .box > * {
+            grid-area:          1/1;
+        }
+
+
+        /* the transform origin for rotate is center by default, so rotations must first */
+        /* put the respective face in the the center, then rotate.            */
+
+        /*.front  {transform:                 translateZ(var(--z-center));}  !* move front to center *!*/
+        /*.back   {transform: rotateY(180deg) translateZ(var(--z-center));}  !* center, then around Y-axis to the back *!*/
+        /*.left   {transform: rotateY(-90deg) translateZ(var(--z-center));}  !* center, then around Y-axis to the left *!*/
+        /*.right  {transform: rotateY( 90deg) translateZ(var(--z-center));}  !* center, then around Y-axis to the right *!*/
+        /*.top    {transform: rotateX( 90deg) translateZ(var(--z-center));}  !* center, then around X-axis to the top *!*/
+        /*.bottom {transform: rotateX(-90deg) translateZ(var(--z-center));}  !* center, then around X-axis to the bottom *!*/
+
+        .face {
+            background-color: #0baadc;
+            border: 3px solid black;
+        }
+
+
+    </style>
+</head>
+<body>
+<main id="main" class="scene3d noSelection">
+    <div class="coords" style="
+        --coords-rotate-x:   0;
+        --coords-rotate-y:   0;
+">
+        <div class="box" >
+<!--             <div class="face front"></div>-->
+<!--             <div class="face back" ></div>-->
+<!--             <div class="face left" ></div>-->
+<!--             <div class="face right"></div>-->
+<!--             <div class="face top"  ></div>-->
+<!--             <div class="face bottom"></div>-->
+         </div>
+    </div>
+</main>
+
+<script>
+
+
+</script>
+</body>
+</html>

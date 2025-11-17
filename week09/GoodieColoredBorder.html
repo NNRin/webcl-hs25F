@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <title>Css background</title>
+    <style>
+        body {
+        }
+        .exampleDiv {
+            width:          50%;
+            aspect-ratio:   1 / 1;
+        }
+        .animatedRainbow {
+            --borderWidth:  3em;
+            --_angle:       0deg;
+
+            border:         var(--borderWidth) solid transparent;
+            border-radius:  calc(var(--borderWidth) * 2);
+            background:
+                linear-gradient(Canvas, Canvas) padding-box,
+                conic-gradient(
+                    from var(--_angle),
+                    yellow,
+                    orange,
+                    red,
+                    blueviolet,
+                    blue,
+                    green,
+                    yellow
+                ) border-box;
+            ;
+            animation: rundummeli 5s infinite linear;
+        }
+        @property --_angle {
+          syntax:           "<angle>";
+          inherits:         true;
+          initial-value:    0deg;
+        }
+        @keyframes rundummeli {
+            100% {
+                --_angle: 360deg;
+            }
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<div class="exampleDiv animatedRainbow"></div>
+
+</body>
+
+</html>

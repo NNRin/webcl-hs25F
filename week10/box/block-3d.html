@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Box</title>
+    <style>
+        :root {
+            --color-fhnw:           #fee72c;
+        }
+        html {
+            overscroll-behavior:    none;
+        }
+
+        body {
+            min-height:             100dvh;
+            display:                grid;
+            grid-template-columns: 100%;
+            grid-template-rows:     80% 20%;
+            margin:                 0;
+            background:             linear-gradient(in srgb-linear, blue, orange);
+            overscroll-behavior:    none;
+        }
+        main {
+            container:       main inline-size;
+            display:         flex;
+            justify-content: center;
+            align-items:     center;
+            perspective:     200vmax;
+            overscroll-behavior:    contain;
+        }
+
+        /* provides the logical group */
+        .block {
+            /* logical units */
+            --block-width:   4;
+            --block-height:  2;
+            --block-depth:   1;
+
+            /* display unit */
+            --display-unit:  calc(50cqw / var(--block-width));
+
+            width:           calc(var(--block-width)  * var(--display-unit));
+            height:          calc(var(--block-height) * var(--display-unit));
+
+            display:         grid;                              /* child positioning  */
+            place-items:     center;
+            transform-style: preserve-3d;                       /* put children in our 3d space */
+            --block-rotate-x:        72;
+            --block-rotate-y:       -27;
+            --block-rotate-z:         0;
+            transform:       rotateZ(calc(var(--block-rotate-z) * 1deg))
+                             rotateY(calc(var(--block-rotate-y) * 1deg))
+                             rotateX(calc(var(--block-rotate-x) * 1deg)) ;
+            transition:      transform .25s ease-out;            /* simulate a bit of momentum */
+        }
+
+        /* all children go directly on top of each other */
+        .block > * {
+            grid-column: 1;
+            grid-row:    1;
+        }
+
+        /* sit in the xy-plane with left-top at 000, rotate such that text content shows correctly */
+        .bottom   {
+            width:              calc(var(--block-width)  * var(--display-unit));
+            height:             calc(var(--block-height) * var(--display-unit));
+            transform:          rotateZ(180deg)
+                                rotateY(180deg);
+        }
+
+        /* top is in the z-axis the depth above back */
+        .top    {
+            width:              calc(var(--block-width)  * var(--display-unit));
+            height:             calc(var(--block-height) * var(--display-unit));
+            transform:          translateZ(calc(var(--block-depth)  * var(--display-unit)));
+        }
+
+        .front  {
+            width:              calc(var(--block-width)  * var(--display-unit));
+            height:             calc(var(--block-depth)  * var(--display-unit));
+            transform:
+                                translateZ( calc(var(--block-depth)   * var(--display-unit) / 2) )
+                                translateY( calc(var(--block-height)  * var(--display-unit) / 2) )
+                                rotateX(-90deg)
+            ;
+        }
+
+        .back  {
+            width:              calc(var(--block-width)  * var(--display-unit));
+            height:             calc(var(--block-depth)  * var(--display-unit));
+            transform:
+                                translateZ( calc(var(--block-depth)   * var(--display-unit) /  2) )
+                                translateY( calc(var(--block-height)  * var(--display-unit) / -2) )
+                                rotateY(180deg)
+                                rotateX(90deg)
+            ;
+        }
+
+        .left   {
+            height:             calc(var(--block-depth)  * var(--display-unit));
+            width:              calc(var(--block-height) * var(--display-unit));
+            transform:
+                                translateZ( calc(var(--block-depth) * var(--display-unit) /  2) )
+                                translateX( calc(var(--block-width) * var(--display-unit) / -2) )
+                                rotateX(-90deg)
+                                rotateY(-90deg)
+            ;
+        }
+        .right   {
+            height:             calc(var(--block-depth)  * var(--display-unit));
+            width:              calc(var(--block-height) * var(--display-unit));
+            transform:
+                                translateZ( calc(var(--block-depth) * var(--display-unit) /  2) )
+                                translateX( calc(var(--block-width) * var(--display-unit) / 2) )
+                                rotateX(-90deg)
+                                rotateY(90deg)
+            ;
+        }
+
+        .face {
+            --base-color:  var(--color-fhnw);
+            background-color:  color-mix( in hsl, var(--base-color), transparent 10%);
+            display:       grid;
+            place-items:   center;
+            font-family:   "Helvetica Neue", system-ui;
+            font-size:     calc(var(--display-unit) * var(--block-depth) * 0.5);
+            font-weight:   bold;
+            color:         color-mix( in hsl, black, transparent 70%);
+
+            -webkit-user-select:    none; /* sadly still needed in 2024 */
+            user-select:    none;
+            /*overflow: clip;*/
+        }
+
+        .front  {
+                    background-color:    var(--color-fhnw);
+                    background-image:    url("nweb.png");
+                    background-repeat:   no-repeat;
+                    background-position: left center;
+                    background-size:     contain;
+                    opacity:             .8;
+        }
+        .top    { --base-color: aliceblue; }
+        .bottom { --base-color: blueviolet; }
+        .back:hover { color:black; }
+
+
+        footer {
+            display:            flex;
+            justify-content:    center;
+            align-items:        center;
+            color:              white;
+            font-size:          120%;
+        }
+
+    </style>
+</head>
+<body>
+<main id="main">
+    <div class="block" id="block">
+        <div class="face bottom">Solid</div>
+        <div class="face top"   >Nice</div>
+        <div class="face front" ></div>
+        <div class="face back"  contenteditable="true" >Interactive</div>
+        <div class="face left"  >Cool</div>
+        <div class="face right" >Fun</div>
+    </div>
+</main>
+<footer>
+    Use mouse or touch to rotate the block.
+</footer>
+
+<script>
+
+    const registerForMouseAndTouch = sourceElement => {
+
+        let lastHorizontalPosition = 0;
+        let lastVerticalPosition   = 0;
+        let firstCall              = true;
+        const getDiffs = evt => {
+            let newHorizontalPosition = evt.clientX;
+            let newVerticalPosition   = evt.clientY;
+            if (evt.type.startsWith("touch")) {
+                newHorizontalPosition  = evt.targetTouches[0].clientX ;
+                newVerticalPosition    = evt.targetTouches[0].clientY ;
+            }
+            result = [
+                newHorizontalPosition - lastHorizontalPosition,
+                newVerticalPosition   - lastVerticalPosition
+            ]
+            lastHorizontalPosition = newHorizontalPosition;
+            lastVerticalPosition   = newVerticalPosition;
+            if ( firstCall) {
+                firstCall = false;
+                return [0,0];
+            }
+            return result;
+        }
+
+        const track = evt => {
+            const [diffHorizontal, diffVertical] = getDiffs(evt);
+            const lastBlockX = window.getComputedStyle(block,null).getPropertyValue("--block-rotate-x");
+            const lastBlockY = window.getComputedStyle(block,null).getPropertyValue("--block-rotate-y");
+            block.style.setProperty('--block-rotate-x', Number(lastBlockX)-diffVertical);
+            block.style.setProperty('--block-rotate-y', Number(lastBlockY)+diffHorizontal);
+        };
+        const consume = evt => {                    // prevent click, focus, drag, and selection events
+            // evt.preventDefault();
+            // evt.stopImmediatePropagation();
+        };
+        sourceElement.onmousedown = evt => {         // start updating
+            consume(evt);
+            firstCall = true;
+            sourceElement.onmousemove = track;
+            sourceElement.ontouchmove = track;
+        };
+        sourceElement.onmouseup   = evt => {         // stop updating
+            consume(evt);
+            sourceElement.onmousemove = undefined;
+            sourceElement.ontouchmove = undefined;
+        };
+        sourceElement.ontouchstart = sourceElement.onmousedown;   // handle mouse and touch events identically
+        sourceElement.ontouchend   = sourceElement.onmouseup;
+    };
+
+    registerForMouseAndTouch(main);
+
+</script>
+</body>
+</html>
