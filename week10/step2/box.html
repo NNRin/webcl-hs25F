@@ -79,7 +79,15 @@
             border-radius:      3%;
             display:            grid;
             place-items:        center;
+            grid-template-columns: repeat(3, 1fr);
         }
+        .circle {
+            width: 1em;
+            aspect-ratio: 1/1;
+            background-color: black;
+            border-radius: 50%;
+        }
+
 
 
     </style>
@@ -93,22 +101,52 @@
         <div class="boxshadow" id="boxshadow"></div>
         <div class="box" id="dice" >
              <div onclick="throwDice()" class="face front">
-<!--                 todo: define the face content -->
+                <!-- Row 1 -->
+                <div></div> <div></div> <div></div>
+                 <!-- Row 2 -->
+                <div></div> <div class="circle"></div> <div></div>
+                 <!-- Row 3 -->
+                <div></div> <div></div> <div></div>
              </div>
              <div onclick="throwDice()" class="face back" >
-
+                 <!-- Row 1 -->
+                 <div class="circle"></div> <div ></div><div class="circle"></div>
+                 <!-- Row 2 -->
+                 <div class="circle"></div> <div ></div><div class="circle"></div>
+                 <!-- Row 3 -->
+                 <div class="circle"></div> <div ></div><div class="circle"></div>
              </div>
              <div onclick="throwDice()" class="face left" >
-
+                 <!-- Row 1 -->
+                 <div></div> <div class="circle"></div> <div></div>
+                 <!-- Row 2 -->
+                 <div></div> <div></div> <div></div>
+                 <!-- Row 3 -->
+                 <div></div> <div class="circle"></div> <div></div>
              </div>
              <div onclick="throwDice()" class="face right">
-
+                 <!-- Row 1 -->
+                 <div class="circle"></div> <div></div> <div class="circle"></div>
+                 <!-- Row 2 -->
+                 <div></div> <div class="circle"></div> <div></div>
+                 <!-- Row 3 -->
+                 <div class="circle"></div> <div></div> <div class="circle"></div>
              </div>
              <div onclick="throwDice()" class="face top"  >
-
+                 <!-- Row 1 -->
+                 <div class="circle"></div> <div></div> <div></div>
+                 <!-- Row 2 -->
+                 <div></div> <div class="circle"></div> <div></div>
+                 <!-- Row 3 -->
+                 <div></div> <div></div> <div class="circle"></div>
              </div>
              <div onclick="throwDice()" class="face bottom">
-
+                 <!-- Row 1 -->
+                 <div class="circle"></div> <div></div> <div class="circle"></div>
+                 <!-- Row 2 -->
+                 <div></div> <div></div> <div></div>
+                 <!-- Row 3 -->
+                 <div class="circle"></div> <div></div> <div class="circle"></div>
              </div>
          </div>
     </div>
