@@ -14,7 +14,7 @@
 /* provides the logical group for the coordinate system */
 .coords {
     position:           absolute; /* position the 000 coords at the center of the scene */
-    top:                50cqh;
+    top:                70cqh;
     left:               50cqw;
 
     --coord-length:     42cqmin;
