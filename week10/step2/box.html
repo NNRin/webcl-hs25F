@@ -156,6 +156,9 @@
 </footer>
 
 <script>
+    /* value in Milliseconds defining for which duration the mouse must be pressed at most to be understood as a Click
+     and not a drag */
+    const CLICK_TO_DRAG_DELTA = 100;
 
     registerForMouseAndTouch(main);
 
@@ -169,6 +172,7 @@
     }
 
     const throwDice = () => {
+
         console.log("Throwing Dice...");
 
         // get coordinate elements and current rotational params
@@ -182,12 +186,37 @@
         console.log("xSpin: " + xSpin);
         console.log("ySpin: " + ySpin);
 
+        coords.style.setProperty('--coords-rotate-x', Number(lastCoordsXRotate) + xSpin);
+        coords.style.setProperty('--coords-rotate-y', Number(lastCoordsYRotate) + ySpin);
 
-        coords.style.setProperty('--coords-rotate-x', Number(lastCoordsXRotate + xSpin));
-        coords.style.setProperty('--coords-rotate-x', Number(lastCoordsYRotate + ySpin));
+
     };
 
-     main.addEventListener("mousedown", () => throwDice());
+    // aync method to wait for user to release the mouse button
+    const awaitRelease = (element) => {
+        return new Promise(resolve => {
+            element.addEventListener('mouseup', handler = () => {
+                element.removeEventListener('mouseup', handler);
+                resolve();
+            });
+        });
+    }
+
+    async function determineMouseDownEvent(e) {
+        // measure time delta between mouse down and mouse up, by waiting for mouse to release
+        const t0 = performance.now();
+        await awaitRelease(main);
+        const t1 = performance.now();
+        const tDelta = t1 - t0;
+        // a long delta indicates
+        console.log("time diff: " + tDelta);
+
+        if (tDelta < CLICK_TO_DRAG_DELTA) {
+            throwDice();
+        }
+    };
+
+     main.addEventListener('mousedown', determineMouseDownEvent);
 
 
 </script>
