@@ -159,9 +159,36 @@
 
     registerForMouseAndTouch(main);
 
+    const randomSpinDegreeCalc = (min, max) => {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    const randomSpinningMotion = (min, max) =>{
+        const rotation = randomSpinDegreeCalc(min, max);
+        return Math.random() < 0.5 ? Number(-1 * rotation) : Number(rotation);
+    }
+
     const throwDice = () => {
-        // todo: something to do here
+        console.log("Throwing Dice...");
+
+        // get coordinate elements and current rotational params
+        const coords = main.querySelector(".coords");
+        const lastCoordsXRotate = window.getComputedStyle(coords, null).getPropertyValue('--coords-rotate-x');
+        const lastCoordsYRotate = window.getComputedStyle(coords, null).getPropertyValue('--coords-rotate-y');
+
+        // determine the random rotational values
+        const xSpin = randomSpinningMotion(100, 500);
+        const ySpin = randomSpinningMotion(100, 500);
+        console.log("xSpin: " + xSpin);
+        console.log("ySpin: " + ySpin);
+
+
+        coords.style.setProperty('--coords-rotate-x', Number(lastCoordsXRotate + xSpin));
+        coords.style.setProperty('--coords-rotate-x', Number(lastCoordsYRotate + ySpin));
     };
+
+     main.addEventListener("mousedown", () => throwDice());
+
 
 </script>
 </body>

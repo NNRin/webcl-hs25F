@@ -39,17 +39,19 @@ const registerForMouseAndTouch = (scene, consumeEvents=false) => {
         evt.preventDefault();
         evt.stopImmediatePropagation();
     };
-    scene.onmousedown = evt => {         // start updating
+    mouseDownFunction = evt => {         // start updating
         consume(evt);
         firstCall = true;
         scene.onmousemove = track;
         scene.ontouchmove = track;
     };
+    scene.addEventListener("mousedown", mouseDownFunction)
+
     scene.onmouseup   = evt => {         // stop updating
         consume(evt);
         scene.onmousemove = undefined;
         scene.ontouchmove = undefined;
     };
-    scene.ontouchstart = scene.onmousedown;   // handle mouse and touch events identically
+    scene.ontouchstart = mouseDownFunction;   // handle mouse and touch events identically
     scene.ontouchend   = scene.onmouseup;
 };
