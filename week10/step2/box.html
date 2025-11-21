@@ -88,7 +88,23 @@
             border-radius: 50%;
         }
 
+        @keyframes toss {
+            0% {
+                translate: 0 0 var(--z-center);
+                animation-timing-function: ease-out;
+            }
+            50% {
+                translate: 0 0 80cqmin;
+                animation-timing-function: ease-in;
+            }
+            100% {
+                translate: 0 0 var(--z-center);
+            }
+        }
 
+        .box.animating {
+            animation: toss 1s;
+        }
 
     </style>
 </head>
@@ -169,23 +185,42 @@
     }
 
     const throwDice = () => {
-
         console.log("Throwing Dice...");
 
-        // get coordinate elements and current rotational params
-        const coords = main.querySelector(".coords");
-        const lastCoordsXRotate = window.getComputedStyle(coords, null).getPropertyValue('--coords-rotate-x');
-        const lastCoordsYRotate = window.getComputedStyle(coords, null).getPropertyValue('--coords-rotate-y');
+        const box = document.querySelector("#dice");
+        const boxShadow = document.querySelector("#boxshadow");
+        const coords = document.querySelector(".coords");
+
+        // fix camera angle to ensure jump is viewed from sensible perspective
+        coords.style.setProperty('--coords-rotate-x', 60);
+        coords.style.setProperty('--coords-rotate-y', 0);
+
 
         // determine the random rotational values
-        const xSpin = randomSpinningMotion(100, 500);
-        const ySpin = randomSpinningMotion(100, 500);
+        const xSpin = randomSpinningMotion(720, 1440);
+        const ySpin = randomSpinningMotion(720, 1440);
         console.log("xSpin: " + xSpin);
         console.log("ySpin: " + ySpin);
 
-        coords.style.setProperty('--coords-rotate-x', Number(lastCoordsXRotate) + xSpin);
-        coords.style.setProperty('--coords-rotate-y', Number(lastCoordsYRotate) + ySpin);
+        const currentX = parseFloat(box.style.getPropertyValue('--rotate-x')) || 0;
+        const currentY = parseFloat(box.style.getPropertyValue('--rotate-y')) || 0;
 
+        box.style.transition = "transform 1s ease-out";
+        box.style.transform = `
+            rotateX(${currentX + xSpin}deg)
+            rotateY(${currentY + ySpin}deg)
+        `;
+
+        box.style.setProperty('--rotate-x', currentX + xSpin);
+        box.style.setProperty('--rotate-y', currentY + ySpin);
+
+        box.classList.remove("animating");
+        boxShadow.classList.remove("shadowAnim");
+
+        void box.offsetWidth;
+
+        box.classList.add("animating");
+        boxShadow.classList.add("shadowAnim");
 
     };
 
